@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iad.mom.prod.mapper.WorkOrderMapper">
+    
+    <resultMap type="WorkOrder" id="WorkOrderResult">
+        <result property="id"    column="id"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="productId"    column="product_id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="plannedStartDate"    column="planned_start_date"    />
+        <result property="plannedEndDate"    column="planned_end_date"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="lineId"    column="line_id"    />
+        <result property="workstationId"    column="workstation_id"    />
+        <result property="priority"    column="priority"    />
+        <result property="status"    column="status"    />
+        <result property="releasedBy"    column="released_by"    />
+        <result property="releasedDate"    column="released_date"    />
+        <result property="closedBy"    column="closed_by"    />
+        <result property="closedDate"    column="closed_date"    />
+        <result property="version"    column="version"    />
+        <result property="creator"    column="creator"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updater"    column="updater"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectWorkOrderVo">
+        select id, order_no, product_id, product_name, planned_start_date, planned_end_date, quantity, line_id, workstation_id, priority, status, released_by, released_date, closed_by, closed_date, version, creator, create_time, updater, update_time from mes_work_order
+    </sql>
+
+    <select id="selectWorkOrderList" parameterType="WorkOrder" resultMap="WorkOrderResult">
+        <include refid="selectWorkOrderVo"/>
+        <where>  
+            <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="params.beginPlannedStartDate != null and params.beginPlannedStartDate != '' and params.endPlannedStartDate != null and params.endPlannedStartDate != ''"> and planned_start_date between #{params.beginPlannedStartDate} and #{params.endPlannedStartDate}</if>
+            <if test="params.beginPlannedEndDate != null and params.beginPlannedEndDate != '' and params.endPlannedEndDate != null and params.endPlannedEndDate != ''"> and planned_end_date between #{params.beginPlannedEndDate} and #{params.endPlannedEndDate}</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+            <if test="priority != null "> and priority = #{priority}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="releasedBy != null  and releasedBy != ''"> and released_by = #{releasedBy}</if>
+            <if test="releasedDate != null "> and released_date = #{releasedDate}</if>
+            <if test="closedBy != null  and closedBy != ''"> and closed_by = #{closedBy}</if>
+            <if test="closedDate != null "> and closed_date = #{closedDate}</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+        </where>
+    </select>
+    
+    <select id="selectWorkOrderById" parameterType="String" resultMap="WorkOrderResult">
+        <include refid="selectWorkOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWorkOrder" parameterType="WorkOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into mes_work_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderNo != null and orderNo != ''">order_no,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="productName != null and productName != ''">product_name,</if>
+            <if test="plannedStartDate != null">planned_start_date,</if>
+            <if test="plannedEndDate != null">planned_end_date,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="lineId != null">line_id,</if>
+            <if test="workstationId != null">workstation_id,</if>
+            <if test="priority != null">priority,</if>
+            <if test="status != null">status,</if>
+            <if test="releasedBy != null">released_by,</if>
+            <if test="releasedDate != null">released_date,</if>
+            <if test="closedBy != null">closed_by,</if>
+            <if test="closedDate != null">closed_date,</if>
+            <if test="version != null">version,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updater != null">updater,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderNo != null and orderNo != ''">#{orderNo},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="productName != null and productName != ''">#{productName},</if>
+            <if test="plannedStartDate != null">#{plannedStartDate},</if>
+            <if test="plannedEndDate != null">#{plannedEndDate},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="lineId != null">#{lineId},</if>
+            <if test="workstationId != null">#{workstationId},</if>
+            <if test="priority != null">#{priority},</if>
+            <if test="status != null">#{status},</if>
+            <if test="releasedBy != null">#{releasedBy},</if>
+            <if test="releasedDate != null">#{releasedDate},</if>
+            <if test="closedBy != null">#{closedBy},</if>
+            <if test="closedDate != null">#{closedDate},</if>
+            <if test="version != null">#{version},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updater != null">#{updater},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWorkOrder" parameterType="WorkOrder">
+        update mes_work_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderNo != null and orderNo != ''">order_no = #{orderNo},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="productName != null and productName != ''">product_name = #{productName},</if>
+            <if test="plannedStartDate != null">planned_start_date = #{plannedStartDate},</if>
+            <if test="plannedEndDate != null">planned_end_date = #{plannedEndDate},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="lineId != null">line_id = #{lineId},</if>
+            <if test="workstationId != null">workstation_id = #{workstationId},</if>
+            <if test="priority != null">priority = #{priority},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="releasedBy != null">released_by = #{releasedBy},</if>
+            <if test="releasedDate != null">released_date = #{releasedDate},</if>
+            <if test="closedBy != null">closed_by = #{closedBy},</if>
+            <if test="closedDate != null">closed_date = #{closedDate},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updater != null">updater = #{updater},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWorkOrderById" parameterType="String">
+        delete from mes_work_order where id = #{id}
+    </delete>
+
+    <delete id="deleteWorkOrderByIds" parameterType="String">
+        delete from mes_work_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iad.mom.prod.mapper.ProdStepMapper">
+    
+    <resultMap type="ProdStep" id="ProdStepResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="description"    column="description"    />
+        <result property="displayName"    column="display_name"    />
+        <result property="operationId"    column="operation_id"    />
+        <result property="routeId"    column="route_id"    />
+        <result property="stepWidth"    column="step_width"    />
+        <result property="stepHeight"    column="step_height"    />
+        <result property="positionLeft"    column="position_left"    />
+        <result property="positionTop"    column="position_top"    />
+        <result property="workCenters"    column="work_centers"    />
+        <result property="fifo"    column="fifo"    />
+        <result property="normalPriority"    column="normal_priority"    />
+        <result property="reworkPriority"    column="rework_priority"    />
+        <result property="splitMergePriority"    column="split_merge_priority"    />
+        <result property="serialize"    column="serialize"    />
+        <result property="continueAddPart"    column="continue_add_part"    />
+        <result property="batchPass"    column="batch_pass"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdDate"    column="created_date"    />
+        <result property="lastModifiedBy"    column="last_modified_by"    />
+        <result property="lastModifiedDate"    column="last_modified_date"    />
+        <result property="deleteState"    column="delete_state"    />
+        <result property="tagId"    column="tag_id"    />
+        <result property="autoInput"    column="auto_input"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectProdStepVo">
+        select id, name, description, display_name, operation_id, route_id, step_width, step_height, position_left, position_top, work_centers, fifo, normal_priority, rework_priority, split_merge_priority, serialize, continue_add_part, batch_pass, created_by, created_date, last_modified_by, last_modified_date, delete_state, tag_id, auto_input, type from mes_prod_step
+    </sql>
+
+    <select id="selectProdStepList" parameterType="ProdStep" resultMap="ProdStepResult">
+        <include refid="selectProdStepVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="displayName != null  and displayName != ''"> and display_name like concat('%', #{displayName}, '%')</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
+            <if test="lastModifiedBy != null  and lastModifiedBy != ''"> and last_modified_by = #{lastModifiedBy}</if>
+        </where>
+    </select>
+    
+    <select id="selectProdStepById" parameterType="Long" resultMap="ProdStepResult">
+        <include refid="selectProdStepVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertProdStep" parameterType="ProdStep" useGeneratedKeys="true" keyProperty="id">
+        insert into mes_prod_step
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="description != null">description,</if>
+            <if test="displayName != null and displayName != ''">display_name,</if>
+            <if test="operationId != null">operation_id,</if>
+            <if test="routeId != null">route_id,</if>
+            <if test="stepWidth != null">step_width,</if>
+            <if test="stepHeight != null">step_height,</if>
+            <if test="positionLeft != null">position_left,</if>
+            <if test="positionTop != null">position_top,</if>
+            <if test="workCenters != null">work_centers,</if>
+            <if test="fifo != null">fifo,</if>
+            <if test="normalPriority != null">normal_priority,</if>
+            <if test="reworkPriority != null">rework_priority,</if>
+            <if test="splitMergePriority != null">split_merge_priority,</if>
+            <if test="serialize != null">serialize,</if>
+            <if test="continueAddPart != null">continue_add_part,</if>
+            <if test="batchPass != null">batch_pass,</if>
+            <if test="createdBy != null and createdBy != ''">created_by,</if>
+            <if test="createdDate != null">created_date,</if>
+            <if test="lastModifiedBy != null">last_modified_by,</if>
+            <if test="lastModifiedDate != null">last_modified_date,</if>
+            <if test="deleteState != null">delete_state,</if>
+            <if test="tagId != null">tag_id,</if>
+            <if test="autoInput != null">auto_input,</if>
+            <if test="type != null">type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="description != null">#{description},</if>
+            <if test="displayName != null and displayName != ''">#{displayName},</if>
+            <if test="operationId != null">#{operationId},</if>
+            <if test="routeId != null">#{routeId},</if>
+            <if test="stepWidth != null">#{stepWidth},</if>
+            <if test="stepHeight != null">#{stepHeight},</if>
+            <if test="positionLeft != null">#{positionLeft},</if>
+            <if test="positionTop != null">#{positionTop},</if>
+            <if test="workCenters != null">#{workCenters},</if>
+            <if test="fifo != null">#{fifo},</if>
+            <if test="normalPriority != null">#{normalPriority},</if>
+            <if test="reworkPriority != null">#{reworkPriority},</if>
+            <if test="splitMergePriority != null">#{splitMergePriority},</if>
+            <if test="serialize != null">#{serialize},</if>
+            <if test="continueAddPart != null">#{continueAddPart},</if>
+            <if test="batchPass != null">#{batchPass},</if>
+            <if test="createdBy != null and createdBy != ''">#{createdBy},</if>
+            <if test="createdDate != null">#{createdDate},</if>
+            <if test="lastModifiedBy != null">#{lastModifiedBy},</if>
+            <if test="lastModifiedDate != null">#{lastModifiedDate},</if>
+            <if test="deleteState != null">#{deleteState},</if>
+            <if test="tagId != null">#{tagId},</if>
+            <if test="autoInput != null">#{autoInput},</if>
+            <if test="type != null">#{type},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProdStep" parameterType="ProdStep">
+        update mes_prod_step
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="displayName != null and displayName != ''">display_name = #{displayName},</if>
+            <if test="operationId != null">operation_id = #{operationId},</if>
+            <if test="routeId != null">route_id = #{routeId},</if>
+            <if test="stepWidth != null">step_width = #{stepWidth},</if>
+            <if test="stepHeight != null">step_height = #{stepHeight},</if>
+            <if test="positionLeft != null">position_left = #{positionLeft},</if>
+            <if test="positionTop != null">position_top = #{positionTop},</if>
+            <if test="workCenters != null">work_centers = #{workCenters},</if>
+            <if test="fifo != null">fifo = #{fifo},</if>
+            <if test="normalPriority != null">normal_priority = #{normalPriority},</if>
+            <if test="reworkPriority != null">rework_priority = #{reworkPriority},</if>
+            <if test="splitMergePriority != null">split_merge_priority = #{splitMergePriority},</if>
+            <if test="serialize != null">serialize = #{serialize},</if>
+            <if test="continueAddPart != null">continue_add_part = #{continueAddPart},</if>
+            <if test="batchPass != null">batch_pass = #{batchPass},</if>
+            <if test="createdBy != null and createdBy != ''">created_by = #{createdBy},</if>
+            <if test="createdDate != null">created_date = #{createdDate},</if>
+            <if test="lastModifiedBy != null">last_modified_by = #{lastModifiedBy},</if>
+            <if test="lastModifiedDate != null">last_modified_date = #{lastModifiedDate},</if>
+            <if test="deleteState != null">delete_state = #{deleteState},</if>
+            <if test="tagId != null">tag_id = #{tagId},</if>
+            <if test="autoInput != null">auto_input = #{autoInput},</if>
+            <if test="type != null">type = #{type},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProdStepById" parameterType="Long">
+        delete from mes_prod_step where id = #{id}
+    </delete>
+
+    <delete id="deleteProdStepByIds" parameterType="String">
+        delete from mes_prod_step where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

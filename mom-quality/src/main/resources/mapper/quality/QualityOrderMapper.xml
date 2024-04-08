@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iad.mom.quality.mapper.QualityOrderMapper">
+    
+    <resultMap type="QualityOrder" id="QualityOrderResult">
+        <result property="id"    column="id"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="productId"    column="product_id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="batchNo"    column="batch_no"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="inspector"    column="inspector"    />
+        <result property="inspectionStartDate"    column="inspection_start_date"    />
+        <result property="inspectionEndDate"    column="inspection_end_date"    />
+        <result property="status"    column="status"    />
+        <result property="result"    column="result"    />
+        <result property="reworkNotes"    column="rework_notes"    />
+        <result property="creator"    column="creator"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updater"    column="updater"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectQualityOrderVo">
+        select id, order_no, product_id, product_name, batch_no, quantity, inspector, inspection_start_date, inspection_end_date, status, result, rework_notes, creator, create_time, updater, update_time from mes_quality_order
+    </sql>
+
+    <select id="selectQualityOrderList" parameterType="QualityOrder" resultMap="QualityOrderResult">
+        <include refid="selectQualityOrderVo"/>
+        <where>  
+            <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="batchNo != null  and batchNo != ''"> and batch_no = #{batchNo}</if>
+        </where>
+    </select>
+    
+    <select id="selectQualityOrderById" parameterType="String" resultMap="QualityOrderResult">
+        <include refid="selectQualityOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertQualityOrder" parameterType="QualityOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into mes_quality_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderNo != null and orderNo != ''">order_no,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="batchNo != null">batch_no,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="inspector != null">inspector,</if>
+            <if test="inspectionStartDate != null">inspection_start_date,</if>
+            <if test="inspectionEndDate != null">inspection_end_date,</if>
+            <if test="status != null">status,</if>
+            <if test="result != null">result,</if>
+            <if test="reworkNotes != null">rework_notes,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updater != null">updater,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderNo != null and orderNo != ''">#{orderNo},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="batchNo != null">#{batchNo},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="inspector != null">#{inspector},</if>
+            <if test="inspectionStartDate != null">#{inspectionStartDate},</if>
+            <if test="inspectionEndDate != null">#{inspectionEndDate},</if>
+            <if test="status != null">#{status},</if>
+            <if test="result != null">#{result},</if>
+            <if test="reworkNotes != null">#{reworkNotes},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updater != null">#{updater},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateQualityOrder" parameterType="QualityOrder">
+        update mes_quality_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderNo != null and orderNo != ''">order_no = #{orderNo},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="batchNo != null">batch_no = #{batchNo},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="inspector != null">inspector = #{inspector},</if>
+            <if test="inspectionStartDate != null">inspection_start_date = #{inspectionStartDate},</if>
+            <if test="inspectionEndDate != null">inspection_end_date = #{inspectionEndDate},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="result != null">result = #{result},</if>
+            <if test="reworkNotes != null">rework_notes = #{reworkNotes},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updater != null">updater = #{updater},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteQualityOrderById" parameterType="String">
+        delete from mes_quality_order where id = #{id}
+    </delete>
+
+    <delete id="deleteQualityOrderByIds" parameterType="String">
+        delete from mes_quality_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

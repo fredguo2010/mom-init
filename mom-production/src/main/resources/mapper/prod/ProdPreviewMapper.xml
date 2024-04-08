@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iad.mom.prod.mapper.ProdPreviewMapper">
+    
+    <resultMap type="ProdPreview" id="ProdPreviewResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="file"    column="file"    />
+        <result property="description"    column="description"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdDate"    column="created_date"    />
+    </resultMap>
+
+    <sql id="selectProdPreviewVo">
+        select id, name, file, description, created_by, created_date from mes_prod_preview
+    </sql>
+
+    <select id="selectProdPreviewList" parameterType="ProdPreview" resultMap="ProdPreviewResult">
+        <include refid="selectProdPreviewVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
+            <if test="createdDate != null  and createdDate != ''"> and created_date = #{createdDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectProdPreviewById" parameterType="Long" resultMap="ProdPreviewResult">
+        <include refid="selectProdPreviewVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertProdPreview" parameterType="ProdPreview" useGeneratedKeys="true" keyProperty="id">
+        insert into mes_prod_preview
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="file != null">file,</if>
+            <if test="description != null">description,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdDate != null">created_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="file != null">#{file},</if>
+            <if test="description != null">#{description},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdDate != null">#{createdDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProdPreview" parameterType="ProdPreview">
+        update mes_prod_preview
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="file != null">file = #{file},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdDate != null">created_date = #{createdDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProdPreviewById" parameterType="Long">
+        delete from mes_prod_preview where id = #{id}
+    </delete>
+
+    <delete id="deleteProdPreviewByIds" parameterType="String">
+        delete from mes_prod_preview where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iad.mom.prod.mapper.LotMapper">
+    
+    <resultMap type="Lot" id="LotResult">
+        <result property="id"    column="id"    />
+        <result property="lotNo"    column="lot_no"    />
+        <result property="productId"    column="product_id"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="status"    column="status"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="lineId"    column="line_id"    />
+        <result property="workstationId"    column="workstation_id"    />
+        <result property="worker"    column="worker"    />
+        <result property="isReworked"    column="is_reworked"    />
+        <result property="parentLot"    column="parent_lot"    />
+        <result property="scrapQuantity"    column="scrap_quantity"    />
+        <result property="scrapCause"    column="scrap_cause"    />
+        <result property="inspector"    column="inspector"    />
+        <result property="inspectionDate"    column="inspection_date"    />
+        <result property="comments"    column="comments"    />
+        <result property="creator"    column="creator"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updater"    column="updater"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectLotVo">
+        select id, lot_no, product_id, quantity, status, start_date, end_date, line_id, workstation_id, worker, is_reworked, parent_lot, scrap_quantity, scrap_cause, inspector, inspection_date, comments, creator, create_time, updater, update_time from mes_lot
+    </sql>
+
+    <select id="selectLotList" parameterType="Lot" resultMap="LotResult">
+        <include refid="selectLotVo"/>
+        <where>  
+            <if test="lotNo != null  and lotNo != ''"> and lot_no = #{lotNo}</if>
+            <if test="productId != null  and productId != ''"> and product_id = #{productId}</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="params.beginStartDate != null and params.beginStartDate != '' and params.endStartDate != null and params.endStartDate != ''"> and start_date between #{params.beginStartDate} and #{params.endStartDate}</if>
+            <if test="params.beginEndDate != null and params.beginEndDate != '' and params.endEndDate != null and params.endEndDate != ''"> and end_date between #{params.beginEndDate} and #{params.endEndDate}</if>
+            <if test="worker != null  and worker != ''"> and worker = #{worker}</if>
+            <if test="inspector != null  and inspector != ''"> and inspector = #{inspector}</if>
+        </where>
+    </select>
+    
+    <select id="selectLotById" parameterType="String" resultMap="LotResult">
+        <include refid="selectLotVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertLot" parameterType="Lot" useGeneratedKeys="true" keyProperty="id">
+        insert into mes_lot
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="lotNo != null and lotNo != ''">lot_no,</if>
+            <if test="productId != null and productId != ''">product_id,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="status != null">status,</if>
+            <if test="startDate != null">start_date,</if>
+            <if test="endDate != null">end_date,</if>
+            <if test="lineId != null">line_id,</if>
+            <if test="workstationId != null">workstation_id,</if>
+            <if test="worker != null">worker,</if>
+            <if test="isReworked != null">is_reworked,</if>
+            <if test="parentLot != null">parent_lot,</if>
+            <if test="scrapQuantity != null">scrap_quantity,</if>
+            <if test="scrapCause != null">scrap_cause,</if>
+            <if test="inspector != null">inspector,</if>
+            <if test="inspectionDate != null">inspection_date,</if>
+            <if test="comments != null">comments,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updater != null">updater,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="lotNo != null and lotNo != ''">#{lotNo},</if>
+            <if test="productId != null and productId != ''">#{productId},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="status != null">#{status},</if>
+            <if test="startDate != null">#{startDate},</if>
+            <if test="endDate != null">#{endDate},</if>
+            <if test="lineId != null">#{lineId},</if>
+            <if test="workstationId != null">#{workstationId},</if>
+            <if test="worker != null">#{worker},</if>
+            <if test="isReworked != null">#{isReworked},</if>
+            <if test="parentLot != null">#{parentLot},</if>
+            <if test="scrapQuantity != null">#{scrapQuantity},</if>
+            <if test="scrapCause != null">#{scrapCause},</if>
+            <if test="inspector != null">#{inspector},</if>
+            <if test="inspectionDate != null">#{inspectionDate},</if>
+            <if test="comments != null">#{comments},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updater != null">#{updater},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLot" parameterType="Lot">
+        update mes_lot
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="lotNo != null and lotNo != ''">lot_no = #{lotNo},</if>
+            <if test="productId != null and productId != ''">product_id = #{productId},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="startDate != null">start_date = #{startDate},</if>
+            <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="lineId != null">line_id = #{lineId},</if>
+            <if test="workstationId != null">workstation_id = #{workstationId},</if>
+            <if test="worker != null">worker = #{worker},</if>
+            <if test="isReworked != null">is_reworked = #{isReworked},</if>
+            <if test="parentLot != null">parent_lot = #{parentLot},</if>
+            <if test="scrapQuantity != null">scrap_quantity = #{scrapQuantity},</if>
+            <if test="scrapCause != null">scrap_cause = #{scrapCause},</if>
+            <if test="inspector != null">inspector = #{inspector},</if>
+            <if test="inspectionDate != null">inspection_date = #{inspectionDate},</if>
+            <if test="comments != null">comments = #{comments},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updater != null">updater = #{updater},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLotById" parameterType="String">
+        delete from mes_lot where id = #{id}
+    </delete>
+
+    <delete id="deleteLotByIds" parameterType="String">
+        delete from mes_lot where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

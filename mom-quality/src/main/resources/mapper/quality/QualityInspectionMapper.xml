@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iad.mom.quality.mapper.QualityInspectionMapper">
+    
+    <resultMap type="QualityInspection" id="QualityInspectionResult">
+        <result property="id"    column="id"    />
+        <result property="productId"    column="product_id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="batchNo"    column="batch_no"    />
+        <result property="inspectionItem"    column="inspection_item"    />
+        <result property="inspector"    column="inspector"    />
+        <result property="inspectionTime"    column="inspection_time"    />
+        <result property="inspectionValue"    column="inspection_value"    />
+        <result property="upperLimit"    column="upper_limit"    />
+        <result property="lowerLimit"    column="lower_limit"    />
+        <result property="qualityStatus"    column="quality_status"    />
+    </resultMap>
+
+    <sql id="selectQualityInspectionVo">
+        select id, product_id, product_name, batch_no, inspection_item, inspector, inspection_time, inspection_value, upper_limit, lower_limit, quality_status from mes_quality_inspection
+    </sql>
+
+    <select id="selectQualityInspectionList" parameterType="QualityInspection" resultMap="QualityInspectionResult">
+        <include refid="selectQualityInspectionVo"/>
+        <where>  
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="batchNo != null  and batchNo != ''"> and batch_no = #{batchNo}</if>
+            <if test="inspectionItem != null  and inspectionItem != ''"> and inspection_item = #{inspectionItem}</if>
+            <if test="inspectionValue != null "> and inspection_value = #{inspectionValue}</if>
+        </where>
+    </select>
+    
+    <select id="selectQualityInspectionById" parameterType="String" resultMap="QualityInspectionResult">
+        <include refid="selectQualityInspectionVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertQualityInspection" parameterType="QualityInspection" useGeneratedKeys="true" keyProperty="id">
+        insert into mes_quality_inspection
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productId != null">product_id,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="batchNo != null">batch_no,</if>
+            <if test="inspectionItem != null">inspection_item,</if>
+            <if test="inspector != null">inspector,</if>
+            <if test="inspectionTime != null">inspection_time,</if>
+            <if test="inspectionValue != null">inspection_value,</if>
+            <if test="upperLimit != null">upper_limit,</if>
+            <if test="lowerLimit != null">lower_limit,</if>
+            <if test="qualityStatus != null">quality_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productId != null">#{productId},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="batchNo != null">#{batchNo},</if>
+            <if test="inspectionItem != null">#{inspectionItem},</if>
+            <if test="inspector != null">#{inspector},</if>
+            <if test="inspectionTime != null">#{inspectionTime},</if>
+            <if test="inspectionValue != null">#{inspectionValue},</if>
+            <if test="upperLimit != null">#{upperLimit},</if>
+            <if test="lowerLimit != null">#{lowerLimit},</if>
+            <if test="qualityStatus != null">#{qualityStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateQualityInspection" parameterType="QualityInspection">
+        update mes_quality_inspection
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="batchNo != null">batch_no = #{batchNo},</if>
+            <if test="inspectionItem != null">inspection_item = #{inspectionItem},</if>
+            <if test="inspector != null">inspector = #{inspector},</if>
+            <if test="inspectionTime != null">inspection_time = #{inspectionTime},</if>
+            <if test="inspectionValue != null">inspection_value = #{inspectionValue},</if>
+            <if test="upperLimit != null">upper_limit = #{upperLimit},</if>
+            <if test="lowerLimit != null">lower_limit = #{lowerLimit},</if>
+            <if test="qualityStatus != null">quality_status = #{qualityStatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteQualityInspectionById" parameterType="String">
+        delete from mes_quality_inspection where id = #{id}
+    </delete>
+
+    <delete id="deleteQualityInspectionByIds" parameterType="String">
+        delete from mes_quality_inspection where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

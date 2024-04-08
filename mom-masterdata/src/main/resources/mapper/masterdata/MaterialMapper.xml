@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iad.mom.masterdata.mapper.MaterialMapper">
+    
+    <resultMap type="Material" id="MaterialResult">
+        <result property="id"    column="id"    />
+        <result property="partNumber"    column="part_number"    />
+        <result property="name"    column="name"    />
+        <result property="revision"    column="revision"    />
+        <result property="bomId"    column="bom_id"    />
+        <result property="description"    column="description"    />
+        <result property="effectiveStart"    column="effective_start"    />
+        <result property="effectiveEnd"    column="effective_end"    />
+        <result property="type"    column="type"    />
+        <result property="siteId"    column="site_id"    />
+        <result property="supplierId"    column="supplier_id"    />
+        <result property="supplierName"    column="supplier_name"    />
+        <result property="lotGeneratorId"    column="lot_generator_id"    />
+        <result property="unitGeneratorId"    column="unit_generator_id"    />
+        <result property="mfLocation"    column="mf_location"    />
+        <result property="mfPartNumber"    column="mf_part_number"    />
+        <result property="textureId"    column="texture_id"    />
+        <result property="specification"    column="specification"    />
+        <result property="brand"    column="brand"    />
+        <result property="state"    column="state"    />
+        <result property="uomId"    column="uom_id"    />
+        <result property="safetyStock"    column="safety_stock"    />
+        <result property="remark"    column="remark"    />
+        <result property="deleteState"    column="delete_state"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdDate"    column="created_date"    />
+        <result property="lastModifiedBy"    column="last_modified_by"    />
+        <result property="lastModifiedDate"    column="last_modified_date"    />
+        <result property="innerCode"    column="inner_code"    />
+        <result property="calculateExp"    column="calculate_exp"    />
+        <result property="expRule"    column="exp_rule"    />
+        <result property="expRuleTime"    column="exp_rule_time"    />
+        <result property="expRuleUom"    column="exp_rule_uom"    />
+        <result property="weight"    column="weight"    />
+    </resultMap>
+
+    <sql id="selectMaterialVo">
+        select id, part_number, name, revision, bom_id, description, effective_start, effective_end, type, site_id, supplier_id, supplier_name, lot_generator_id, unit_generator_id, mf_location, mf_part_number, texture_id, specification, brand, state, uom_id, safety_stock, remark, delete_state, created_by, created_date, last_modified_by, last_modified_date, inner_code, calculate_exp, exp_rule, exp_rule_time, exp_rule_uom, weight from md_part
+    </sql>
+
+    <select id="selectMaterialList" parameterType="Material" resultMap="MaterialResult">
+        <include refid="selectMaterialVo"/>
+        <where>  
+            <if test="partNumber != null  and partNumber != ''"> and part_number = #{partNumber}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="revision != null  and revision != ''"> and revision = #{revision}</if>
+            <if test="bomId != null "> and bom_id = #{bomId}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="effectiveStart != null "> and effective_start = #{effectiveStart}</if>
+            <if test="effectiveEnd != null "> and effective_end = #{effectiveEnd}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="siteId != null "> and site_id = #{siteId}</if>
+            <if test="supplierId != null "> and supplier_id = #{supplierId}</if>
+            <if test="supplierName != null  and supplierName != ''"> and supplier_name like concat('%', #{supplierName}, '%')</if>
+            <if test="lotGeneratorId != null "> and lot_generator_id = #{lotGeneratorId}</if>
+            <if test="unitGeneratorId != null "> and unit_generator_id = #{unitGeneratorId}</if>
+            <if test="mfLocation != null  and mfLocation != ''"> and mf_location = #{mfLocation}</if>
+            <if test="mfPartNumber != null  and mfPartNumber != ''"> and mf_part_number = #{mfPartNumber}</if>
+            <if test="textureId != null "> and texture_id = #{textureId}</if>
+            <if test="specification != null  and specification != ''"> and specification = #{specification}</if>
+            <if test="brand != null  and brand != ''"> and brand = #{brand}</if>
+            <if test="state != null "> and state = #{state}</if>
+            <if test="uomId != null "> and uom_id = #{uomId}</if>
+            <if test="safetyStock != null "> and safety_stock = #{safetyStock}</if>
+            <if test="deleteState != null "> and delete_state = #{deleteState}</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
+            <if test="createdDate != null "> and created_date = #{createdDate}</if>
+            <if test="lastModifiedBy != null  and lastModifiedBy != ''"> and last_modified_by = #{lastModifiedBy}</if>
+            <if test="lastModifiedDate != null "> and last_modified_date = #{lastModifiedDate}</if>
+            <if test="innerCode != null  and innerCode != ''"> and inner_code = #{innerCode}</if>
+            <if test="calculateExp != null  and calculateExp != ''"> and calculate_exp = #{calculateExp}</if>
+            <if test="expRule != null "> and exp_rule = #{expRule}</if>
+            <if test="expRuleTime != null "> and exp_rule_time = #{expRuleTime}</if>
+            <if test="expRuleUom != null "> and exp_rule_uom = #{expRuleUom}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+        </where>
+    </select>
+    
+    <select id="selectMaterialById" parameterType="Long" resultMap="MaterialResult">
+        <include refid="selectMaterialVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertMaterial" parameterType="Material">
+        insert into md_part
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="partNumber != null">part_number,</if>
+            <if test="name != null">name,</if>
+            <if test="revision != null">revision,</if>
+            <if test="bomId != null">bom_id,</if>
+            <if test="description != null">description,</if>
+            <if test="effectiveStart != null">effective_start,</if>
+            <if test="effectiveEnd != null">effective_end,</if>
+            <if test="type != null">type,</if>
+            <if test="siteId != null">site_id,</if>
+            <if test="supplierId != null">supplier_id,</if>
+            <if test="supplierName != null">supplier_name,</if>
+            <if test="lotGeneratorId != null">lot_generator_id,</if>
+            <if test="unitGeneratorId != null">unit_generator_id,</if>
+            <if test="mfLocation != null">mf_location,</if>
+            <if test="mfPartNumber != null">mf_part_number,</if>
+            <if test="textureId != null">texture_id,</if>
+            <if test="specification != null">specification,</if>
+            <if test="brand != null">brand,</if>
+            <if test="state != null">state,</if>
+            <if test="uomId != null">uom_id,</if>
+            <if test="safetyStock != null">safety_stock,</if>
+            <if test="remark != null">remark,</if>
+            <if test="deleteState != null">delete_state,</if>
+            <if test="createdBy != null and createdBy != ''">created_by,</if>
+            <if test="createdDate != null">created_date,</if>
+            <if test="lastModifiedBy != null">last_modified_by,</if>
+            <if test="lastModifiedDate != null">last_modified_date,</if>
+            <if test="innerCode != null">inner_code,</if>
+            <if test="calculateExp != null">calculate_exp,</if>
+            <if test="expRule != null">exp_rule,</if>
+            <if test="expRuleTime != null">exp_rule_time,</if>
+            <if test="expRuleUom != null">exp_rule_uom,</if>
+            <if test="weight != null">weight,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="partNumber != null">#{partNumber},</if>
+            <if test="name != null">#{name},</if>
+            <if test="revision != null">#{revision},</if>
+            <if test="bomId != null">#{bomId},</if>
+            <if test="description != null">#{description},</if>
+            <if test="effectiveStart != null">#{effectiveStart},</if>
+            <if test="effectiveEnd != null">#{effectiveEnd},</if>
+            <if test="type != null">#{type},</if>
+            <if test="siteId != null">#{siteId},</if>
+            <if test="supplierId != null">#{supplierId},</if>
+            <if test="supplierName != null">#{supplierName},</if>
+            <if test="lotGeneratorId != null">#{lotGeneratorId},</if>
+            <if test="unitGeneratorId != null">#{unitGeneratorId},</if>
+            <if test="mfLocation != null">#{mfLocation},</if>
+            <if test="mfPartNumber != null">#{mfPartNumber},</if>
+            <if test="textureId != null">#{textureId},</if>
+            <if test="specification != null">#{specification},</if>
+            <if test="brand != null">#{brand},</if>
+            <if test="state != null">#{state},</if>
+            <if test="uomId != null">#{uomId},</if>
+            <if test="safetyStock != null">#{safetyStock},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="deleteState != null">#{deleteState},</if>
+            <if test="createdBy != null and createdBy != ''">#{createdBy},</if>
+            <if test="createdDate != null">#{createdDate},</if>
+            <if test="lastModifiedBy != null">#{lastModifiedBy},</if>
+            <if test="lastModifiedDate != null">#{lastModifiedDate},</if>
+            <if test="innerCode != null">#{innerCode},</if>
+            <if test="calculateExp != null">#{calculateExp},</if>
+            <if test="expRule != null">#{expRule},</if>
+            <if test="expRuleTime != null">#{expRuleTime},</if>
+            <if test="expRuleUom != null">#{expRuleUom},</if>
+            <if test="weight != null">#{weight},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMaterial" parameterType="Material">
+        update md_part
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="partNumber != null">part_number = #{partNumber},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="revision != null">revision = #{revision},</if>
+            <if test="bomId != null">bom_id = #{bomId},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="effectiveStart != null">effective_start = #{effectiveStart},</if>
+            <if test="effectiveEnd != null">effective_end = #{effectiveEnd},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="siteId != null">site_id = #{siteId},</if>
+            <if test="supplierId != null">supplier_id = #{supplierId},</if>
+            <if test="supplierName != null">supplier_name = #{supplierName},</if>
+            <if test="lotGeneratorId != null">lot_generator_id = #{lotGeneratorId},</if>
+            <if test="unitGeneratorId != null">unit_generator_id = #{unitGeneratorId},</if>
+            <if test="mfLocation != null">mf_location = #{mfLocation},</if>
+            <if test="mfPartNumber != null">mf_part_number = #{mfPartNumber},</if>
+            <if test="textureId != null">texture_id = #{textureId},</if>
+            <if test="specification != null">specification = #{specification},</if>
+            <if test="brand != null">brand = #{brand},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="uomId != null">uom_id = #{uomId},</if>
+            <if test="safetyStock != null">safety_stock = #{safetyStock},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="deleteState != null">delete_state = #{deleteState},</if>
+            <if test="createdBy != null and createdBy != ''">created_by = #{createdBy},</if>
+            <if test="createdDate != null">created_date = #{createdDate},</if>
+            <if test="lastModifiedBy != null">last_modified_by = #{lastModifiedBy},</if>
+            <if test="lastModifiedDate != null">last_modified_date = #{lastModifiedDate},</if>
+            <if test="innerCode != null">inner_code = #{innerCode},</if>
+            <if test="calculateExp != null">calculate_exp = #{calculateExp},</if>
+            <if test="expRule != null">exp_rule = #{expRule},</if>
+            <if test="expRuleTime != null">exp_rule_time = #{expRuleTime},</if>
+            <if test="expRuleUom != null">exp_rule_uom = #{expRuleUom},</if>
+            <if test="weight != null">weight = #{weight},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMaterialById" parameterType="Long">
+        delete from md_part where id = #{id}
+    </delete>
+
+    <delete id="deleteMaterialByIds" parameterType="String">
+        delete from md_part where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

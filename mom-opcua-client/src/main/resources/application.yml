@@ -1,0 +1,7 @@
+server:
+  # ????HTTP??????8080
+  port: 8083
+kangaroohy:
+  minio:
+    endpoint: opc.tcp://127.0.0.1:53530/OPCUA/SimulationServer
+    security-policy: none

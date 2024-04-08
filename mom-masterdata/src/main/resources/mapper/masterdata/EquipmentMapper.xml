@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iad.mom.masterdata.mapper.EquipmentMapper">
+    
+    <resultMap type="Equipment" id="EquipmentResult">
+        <result property="id"    column="id"    />
+        <result property="equipNumber"    column="equip_number"    />
+        <result property="name"    column="name"    />
+        <result property="siteId"    column="site_id"    />
+        <result property="locationId"    column="location_id"    />
+        <result property="description"    column="description"    />
+        <result property="category"    column="category"    />
+        <result property="state"    column="state"    />
+        <result property="remark"    column="remark"    />
+        <result property="deleteState"    column="delete_state"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdDate"    column="created_date"    />
+        <result property="lastModifiedBy"    column="last_modified_by"    />
+        <result property="lastModifiedDate"    column="last_modified_date"    />
+        <result property="purpose"    column="purpose"    />
+        <result property="model"    column="model"    />
+        <result property="owner"    column="owner"    />
+        <result property="manufactureDate"    column="manufacture_date"    />
+        <result property="admissionDate"    column="admission_date"    />
+        <result property="serialNumber"    column="serial_number"    />
+        <result property="equipmentTypeId"    column="equipment_type_id"    />
+        <result property="status"    column="status"    />
+        <result property="manufacture"    column="manufacture"    />
+        <result property="inRfidTagId"    column="in_rfid_tag_id"    />
+        <result property="outRfidTagId"    column="out_rfid_tag_id"    />
+        <result property="weightTagId"    column="weight_tag_id"    />
+        <result property="inRfidFinishTagId"    column="in_rfid_finish_tag_id"    />
+        <result property="outRfidFinishTagId"    column="out_rfid_finish_tag_id"    />
+        <result property="inRfidStartTagId"    column="in_rfid_start_tag_id"    />
+        <result property="inRfidTriggerTagId"    column="in_rfid_trigger_tag_id"    />
+        <result property="outRfidStartTagId"    column="out_rfid_start_tag_id"    />
+        <result property="outRfidTriggerTagId"    column="out_rfid_trigger_tag_id"    />
+    </resultMap>
+
+    <sql id="selectEquipmentVo">
+        select id, equip_number, name, site_id, location_id, description, category, state, remark, delete_state, created_by, created_date, last_modified_by, last_modified_date, purpose, model, owner, manufacture_date, admission_date, serial_number, equipment_type_id, status, manufacture, in_rfid_tag_id, out_rfid_tag_id, weight_tag_id, in_rfid_finish_tag_id, out_rfid_finish_tag_id, in_rfid_start_tag_id, in_rfid_trigger_tag_id, out_rfid_start_tag_id, out_rfid_trigger_tag_id from md_equipment
+    </sql>
+
+    <select id="selectEquipmentList" parameterType="Equipment" resultMap="EquipmentResult">
+        <include refid="selectEquipmentVo"/>
+        <where>  
+            <if test="equipNumber != null  and equipNumber != ''"> and equip_number = #{equipNumber}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="purpose != null "> and purpose = #{purpose}</if>
+            <if test="model != null  and model != ''"> and model = #{model}</if>
+            <if test="owner != null  and owner != ''"> and owner = #{owner}</if>
+            <if test="manufactureDate != null "> and manufacture_date = #{manufactureDate}</if>
+            <if test="admissionDate != null "> and admission_date = #{admissionDate}</if>
+            <if test="serialNumber != null  and serialNumber != ''"> and serial_number = #{serialNumber}</if>
+            <if test="manufacture != null  and manufacture != ''"> and manufacture = #{manufacture}</if>
+        </where>
+    </select>
+    
+    <select id="selectEquipmentById" parameterType="Long" resultMap="EquipmentResult">
+        <include refid="selectEquipmentVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertEquipment" parameterType="Equipment">
+        insert into md_equipment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="equipNumber != null">equip_number,</if>
+            <if test="name != null">name,</if>
+            <if test="siteId != null">site_id,</if>
+            <if test="locationId != null">location_id,</if>
+            <if test="description != null">description,</if>
+            <if test="category != null">category,</if>
+            <if test="state != null">state,</if>
+            <if test="remark != null">remark,</if>
+            <if test="deleteState != null">delete_state,</if>
+            <if test="createdBy != null and createdBy != ''">created_by,</if>
+            <if test="createdDate != null">created_date,</if>
+            <if test="lastModifiedBy != null">last_modified_by,</if>
+            <if test="lastModifiedDate != null">last_modified_date,</if>
+            <if test="purpose != null">purpose,</if>
+            <if test="model != null">model,</if>
+            <if test="owner != null">owner,</if>
+            <if test="manufactureDate != null">manufacture_date,</if>
+            <if test="admissionDate != null">admission_date,</if>
+            <if test="serialNumber != null">serial_number,</if>
+            <if test="equipmentTypeId != null">equipment_type_id,</if>
+            <if test="status != null">status,</if>
+            <if test="manufacture != null">manufacture,</if>
+            <if test="inRfidTagId != null">in_rfid_tag_id,</if>
+            <if test="outRfidTagId != null">out_rfid_tag_id,</if>
+            <if test="weightTagId != null">weight_tag_id,</if>
+            <if test="inRfidFinishTagId != null">in_rfid_finish_tag_id,</if>
+            <if test="outRfidFinishTagId != null">out_rfid_finish_tag_id,</if>
+            <if test="inRfidStartTagId != null">in_rfid_start_tag_id,</if>
+            <if test="inRfidTriggerTagId != null">in_rfid_trigger_tag_id,</if>
+            <if test="outRfidStartTagId != null">out_rfid_start_tag_id,</if>
+            <if test="outRfidTriggerTagId != null">out_rfid_trigger_tag_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="equipNumber != null">#{equipNumber},</if>
+            <if test="name != null">#{name},</if>
+            <if test="siteId != null">#{siteId},</if>
+            <if test="locationId != null">#{locationId},</if>
+            <if test="description != null">#{description},</if>
+            <if test="category != null">#{category},</if>
+            <if test="state != null">#{state},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="deleteState != null">#{deleteState},</if>
+            <if test="createdBy != null and createdBy != ''">#{createdBy},</if>
+            <if test="createdDate != null">#{createdDate},</if>
+            <if test="lastModifiedBy != null">#{lastModifiedBy},</if>
+            <if test="lastModifiedDate != null">#{lastModifiedDate},</if>
+            <if test="purpose != null">#{purpose},</if>
+            <if test="model != null">#{model},</if>
+            <if test="owner != null">#{owner},</if>
+            <if test="manufactureDate != null">#{manufactureDate},</if>
+            <if test="admissionDate != null">#{admissionDate},</if>
+            <if test="serialNumber != null">#{serialNumber},</if>
+            <if test="equipmentTypeId != null">#{equipmentTypeId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="manufacture != null">#{manufacture},</if>
+            <if test="inRfidTagId != null">#{inRfidTagId},</if>
+            <if test="outRfidTagId != null">#{outRfidTagId},</if>
+            <if test="weightTagId != null">#{weightTagId},</if>
+            <if test="inRfidFinishTagId != null">#{inRfidFinishTagId},</if>
+            <if test="outRfidFinishTagId != null">#{outRfidFinishTagId},</if>
+            <if test="inRfidStartTagId != null">#{inRfidStartTagId},</if>
+            <if test="inRfidTriggerTagId != null">#{inRfidTriggerTagId},</if>
+            <if test="outRfidStartTagId != null">#{outRfidStartTagId},</if>
+            <if test="outRfidTriggerTagId != null">#{outRfidTriggerTagId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEquipment" parameterType="Equipment">
+        update md_equipment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="equipNumber != null">equip_number = #{equipNumber},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="siteId != null">site_id = #{siteId},</if>
+            <if test="locationId != null">location_id = #{locationId},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="category != null">category = #{category},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="deleteState != null">delete_state = #{deleteState},</if>
+            <if test="createdBy != null and createdBy != ''">created_by = #{createdBy},</if>
+            <if test="createdDate != null">created_date = #{createdDate},</if>
+            <if test="lastModifiedBy != null">last_modified_by = #{lastModifiedBy},</if>
+            <if test="lastModifiedDate != null">last_modified_date = #{lastModifiedDate},</if>
+            <if test="purpose != null">purpose = #{purpose},</if>
+            <if test="model != null">model = #{model},</if>
+            <if test="owner != null">owner = #{owner},</if>
+            <if test="manufactureDate != null">manufacture_date = #{manufactureDate},</if>
+            <if test="admissionDate != null">admission_date = #{admissionDate},</if>
+            <if test="serialNumber != null">serial_number = #{serialNumber},</if>
+            <if test="equipmentTypeId != null">equipment_type_id = #{equipmentTypeId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="manufacture != null">manufacture = #{manufacture},</if>
+            <if test="inRfidTagId != null">in_rfid_tag_id = #{inRfidTagId},</if>
+            <if test="outRfidTagId != null">out_rfid_tag_id = #{outRfidTagId},</if>
+            <if test="weightTagId != null">weight_tag_id = #{weightTagId},</if>
+            <if test="inRfidFinishTagId != null">in_rfid_finish_tag_id = #{inRfidFinishTagId},</if>
+            <if test="outRfidFinishTagId != null">out_rfid_finish_tag_id = #{outRfidFinishTagId},</if>
+            <if test="inRfidStartTagId != null">in_rfid_start_tag_id = #{inRfidStartTagId},</if>
+            <if test="inRfidTriggerTagId != null">in_rfid_trigger_tag_id = #{inRfidTriggerTagId},</if>
+            <if test="outRfidStartTagId != null">out_rfid_start_tag_id = #{outRfidStartTagId},</if>
+            <if test="outRfidTriggerTagId != null">out_rfid_trigger_tag_id = #{outRfidTriggerTagId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEquipmentById" parameterType="Long">
+        delete from md_equipment where id = #{id}
+    </delete>
+
+    <delete id="deleteEquipmentByIds" parameterType="String">
+        delete from md_equipment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

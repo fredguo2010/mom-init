@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iad.mom.masterdata.mapper.SiteMapper">
+    
+    <resultMap type="Site" id="SiteResult">
+        <result property="id"    column="id"    />
+        <result property="siteNumber"    column="site_number"    />
+        <result property="name"    column="name"    />
+        <result property="country"    column="country"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="address"    column="address"    />
+        <result property="postCode"    column="post_code"    />
+        <result property="telNumber"    column="tel_number"    />
+        <result property="faxNumber"    column="fax_number"    />
+        <result property="state"    column="state"    />
+        <result property="description"    column="description"    />
+        <result property="timeZone"    column="time_zone"    />
+        <result property="remark"    column="remark"    />
+        <result property="deleteState"    column="delete_state"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdDate"    column="created_date"    />
+        <result property="lastModifiedBy"    column="last_modified_by"    />
+        <result property="lastModifiedDate"    column="last_modified_date"    />
+    </resultMap>
+
+    <sql id="selectSiteVo">
+        select id, site_number, name, country, province, city, address, post_code, tel_number, fax_number, state, description, time_zone, remark, delete_state, created_by, created_date, last_modified_by, last_modified_date from md_site
+    </sql>
+
+    <select id="selectSiteList" parameterType="Site" resultMap="SiteResult">
+        <include refid="selectSiteVo"/>
+        <where>  
+            <if test="siteNumber != null  and siteNumber != ''"> and site_number = #{siteNumber}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="country != null  and country != ''"> and country = #{country}</if>
+            <if test="province != null  and province != ''"> and province = #{province}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="postCode != null  and postCode != ''"> and post_code = #{postCode}</if>
+            <if test="telNumber != null  and telNumber != ''"> and tel_number = #{telNumber}</if>
+            <if test="faxNumber != null  and faxNumber != ''"> and fax_number = #{faxNumber}</if>
+            <if test="state != null "> and state = #{state}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="timeZone != null  and timeZone != ''"> and time_zone = #{timeZone}</if>
+            <if test="deleteState != null "> and delete_state = #{deleteState}</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
+            <if test="createdDate != null "> and created_date = #{createdDate}</if>
+            <if test="lastModifiedBy != null  and lastModifiedBy != ''"> and last_modified_by = #{lastModifiedBy}</if>
+            <if test="lastModifiedDate != null "> and last_modified_date = #{lastModifiedDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectSiteById" parameterType="Long" resultMap="SiteResult">
+        <include refid="selectSiteVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSite" parameterType="Site">
+        insert into md_site
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="siteNumber != null">site_number,</if>
+            <if test="name != null">name,</if>
+            <if test="country != null">country,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="address != null">address,</if>
+            <if test="postCode != null">post_code,</if>
+            <if test="telNumber != null">tel_number,</if>
+            <if test="faxNumber != null">fax_number,</if>
+            <if test="state != null">state,</if>
+            <if test="description != null">description,</if>
+            <if test="timeZone != null">time_zone,</if>
+            <if test="remark != null">remark,</if>
+            <if test="deleteState != null">delete_state,</if>
+            <if test="createdBy != null and createdBy != ''">created_by,</if>
+            <if test="createdDate != null">created_date,</if>
+            <if test="lastModifiedBy != null">last_modified_by,</if>
+            <if test="lastModifiedDate != null">last_modified_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="siteNumber != null">#{siteNumber},</if>
+            <if test="name != null">#{name},</if>
+            <if test="country != null">#{country},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="address != null">#{address},</if>
+            <if test="postCode != null">#{postCode},</if>
+            <if test="telNumber != null">#{telNumber},</if>
+            <if test="faxNumber != null">#{faxNumber},</if>
+            <if test="state != null">#{state},</if>
+            <if test="description != null">#{description},</if>
+            <if test="timeZone != null">#{timeZone},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="deleteState != null">#{deleteState},</if>
+            <if test="createdBy != null and createdBy != ''">#{createdBy},</if>
+            <if test="createdDate != null">#{createdDate},</if>
+            <if test="lastModifiedBy != null">#{lastModifiedBy},</if>
+            <if test="lastModifiedDate != null">#{lastModifiedDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSite" parameterType="Site">
+        update md_site
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="siteNumber != null">site_number = #{siteNumber},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="country != null">country = #{country},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="postCode != null">post_code = #{postCode},</if>
+            <if test="telNumber != null">tel_number = #{telNumber},</if>
+            <if test="faxNumber != null">fax_number = #{faxNumber},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="timeZone != null">time_zone = #{timeZone},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="deleteState != null">delete_state = #{deleteState},</if>
+            <if test="createdBy != null and createdBy != ''">created_by = #{createdBy},</if>
+            <if test="createdDate != null">created_date = #{createdDate},</if>
+            <if test="lastModifiedBy != null">last_modified_by = #{lastModifiedBy},</if>
+            <if test="lastModifiedDate != null">last_modified_date = #{lastModifiedDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSiteById" parameterType="Long">
+        delete from md_site where id = #{id}
+    </delete>
+
+    <delete id="deleteSiteByIds" parameterType="String">
+        delete from md_site where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

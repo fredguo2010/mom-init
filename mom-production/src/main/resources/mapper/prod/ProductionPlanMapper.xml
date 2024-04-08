@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iad.mom.prod.mapper.ProductionPlanMapper">
+    
+    <resultMap type="ProductionPlan" id="ProductionPlanResult">
+        <result property="id"    column="id"    />
+        <result property="planNo"    column="plan_no"    />
+        <result property="productId"    column="product_id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="planQuantity"    column="plan_quantity"    />
+        <result property="planStartDate"    column="plan_start_date"    />
+        <result property="planEndDate"    column="plan_end_date"    />
+        <result property="lineId"    column="line_id"    />
+        <result property="workstationId"    column="workstation_id"    />
+        <result property="materialId"    column="material_id"    />
+        <result property="materialQuantity"    column="material_quantity"    />
+        <result property="staffId"    column="staff_id"    />
+        <result property="staffHours"    column="staff_hours"    />
+        <result property="status"    column="status"    />
+        <result property="creator"    column="creator"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updater"    column="updater"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectProductionPlanVo">
+        select id, plan_no, product_id, product_name, plan_quantity, plan_start_date, plan_end_date, line_id, workstation_id, material_id, material_quantity, staff_id, staff_hours, status, creator, create_time, updater, update_time from mes_prod_plan
+    </sql>
+
+    <select id="selectProductionPlanList" parameterType="ProductionPlan" resultMap="ProductionPlanResult">
+        <include refid="selectProductionPlanVo"/>
+        <where>  
+            <if test="planNo != null  and planNo != ''"> and plan_no like concat('%', #{planNo}, '%')</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="planQuantity != null "> and plan_quantity = #{planQuantity}</if>
+            <if test="params.beginPlanStartDate != null and params.beginPlanStartDate != '' and params.endPlanStartDate != null and params.endPlanStartDate != ''"> and plan_start_date between #{params.beginPlanStartDate} and #{params.endPlanStartDate}</if>
+            <if test="params.beginPlanEndDate != null and params.beginPlanEndDate != '' and params.endPlanEndDate != null and params.endPlanEndDate != ''"> and plan_end_date between #{params.beginPlanEndDate} and #{params.endPlanEndDate}</if>
+            <if test="materialId != null  and materialId != ''"> and material_id like concat('%', #{materialId}, '%')</if>
+            <if test="materialQuantity != null "> and material_quantity = #{materialQuantity}</if>
+        </where>
+    </select>
+    
+    <select id="selectProductionPlanById" parameterType="String" resultMap="ProductionPlanResult">
+        <include refid="selectProductionPlanVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertProductionPlan" parameterType="ProductionPlan" useGeneratedKeys="true" keyProperty="id">
+        insert into mes_prod_plan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="planNo != null and planNo != ''">plan_no,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="productName != null and productName != ''">product_name,</if>
+            <if test="planQuantity != null">plan_quantity,</if>
+            <if test="planStartDate != null">plan_start_date,</if>
+            <if test="planEndDate != null">plan_end_date,</if>
+            <if test="lineId != null">line_id,</if>
+            <if test="workstationId != null">workstation_id,</if>
+            <if test="materialId != null and materialId != ''">material_id,</if>
+            <if test="materialQuantity != null">material_quantity,</if>
+            <if test="staffId != null">staff_id,</if>
+            <if test="staffHours != null">staff_hours,</if>
+            <if test="status != null">status,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updater != null">updater,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="planNo != null and planNo != ''">#{planNo},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="productName != null and productName != ''">#{productName},</if>
+            <if test="planQuantity != null">#{planQuantity},</if>
+            <if test="planStartDate != null">#{planStartDate},</if>
+            <if test="planEndDate != null">#{planEndDate},</if>
+            <if test="lineId != null">#{lineId},</if>
+            <if test="workstationId != null">#{workstationId},</if>
+            <if test="materialId != null and materialId != ''">#{materialId},</if>
+            <if test="materialQuantity != null">#{materialQuantity},</if>
+            <if test="staffId != null">#{staffId},</if>
+            <if test="staffHours != null">#{staffHours},</if>
+            <if test="status != null">#{status},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updater != null">#{updater},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProductionPlan" parameterType="ProductionPlan">
+        update mes_prod_plan
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="planNo != null and planNo != ''">plan_no = #{planNo},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="productName != null and productName != ''">product_name = #{productName},</if>
+            <if test="planQuantity != null">plan_quantity = #{planQuantity},</if>
+            <if test="planStartDate != null">plan_start_date = #{planStartDate},</if>
+            <if test="planEndDate != null">plan_end_date = #{planEndDate},</if>
+            <if test="lineId != null">line_id = #{lineId},</if>
+            <if test="workstationId != null">workstation_id = #{workstationId},</if>
+            <if test="materialId != null and materialId != ''">material_id = #{materialId},</if>
+            <if test="materialQuantity != null">material_quantity = #{materialQuantity},</if>
+            <if test="staffId != null">staff_id = #{staffId},</if>
+            <if test="staffHours != null">staff_hours = #{staffHours},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updater != null">updater = #{updater},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProductionPlanById" parameterType="String">
+        delete from mes_prod_plan where id = #{id}
+    </delete>
+
+    <delete id="deleteProductionPlanByIds" parameterType="String">
+        delete from mes_prod_plan where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
